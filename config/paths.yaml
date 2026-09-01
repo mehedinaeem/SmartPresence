@@ -8,8 +8,10 @@ face_visibility: dataset/metadata/face_visibility.csv
 embeddings: models/embeddings/embeddings.pkl
 classifier: models/classifiers/face_classifier.pkl
 label_encoder: models/classifiers/label_encoder.pkl
-model_info: models/metadata/model_info.json
+model_info: models/classifiers/model_info.json
 outputs: outputs
 attendance_logs: attendance_logs
 experiments: experiments
-
+test_single_images: test_data/images/single
+test_group_images: test_data/images/group
+test_videos: test_data/videos

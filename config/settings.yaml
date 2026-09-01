@@ -35,3 +35,11 @@ RECOGNITION:
   embedding_dimension: 128
   svm_kernel: linear
   confidence_threshold: 0.50
+TESTING:
+  detector_backend: mtcnn
+  align: true
+  normalization: Facenet
+  unknown_confidence_threshold: 0.55
+  video_frame_interval_seconds: 3
+  attendance_threshold: 0.75
+  show_preview: false

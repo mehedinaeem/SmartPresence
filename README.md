@@ -68,5 +68,11 @@ Do not overwrite completed experiment directories. Create `exp_002_*`, record th
 
 ## Current limitations
 
-No prior application code or trained model existed to migrate. Hardware-specific fingerprint matching and production-grade multi-camera tracking require adapters for the selected scanner/camera. The included HOG/centroid tracker is an explicit baseline, not a claim of research-grade covered-person re-identification. The expensive 40-student preprocessing/training pipeline was intentionally not run during restructuring.
+Hardware-specific fingerprint matching and production-grade multi-camera tracking require adapters for the selected scanner/camera. The included HOG/centroid tracker is an explicit baseline, not a claim of research-grade covered-person re-identification. The copied Colab classifier supports the 36 uncovered students; it does not contain the four covered identities.
+
+## Local trained-model testing
+
+Place single images in `test_data/images/single/`, group images in `test_data/images/group/`, and recorded videos in `test_data/videos/`. After activating `.venv`, run `python scripts/check_model.py`, `python scripts/test_single_image.py`, `python scripts/test_group_image.py`, and `python scripts/test_video.py`. Inference uses aligned MTCNN detections, 128-D DeepFace FaceNet embeddings with `Facenet` normalization, and the saved sklearn pipeline. Because the classifier already contains `Normalizer + SVC`, embeddings are not normalized a second time. Unknown predictions use a configurable 0.55 probability threshold; video attendance samples every three seconds and uses a 75% presence threshold.
+
+The current trained model has 36 uncovered classes. Covered rolls 22102002, 22102030, 22102031, and 22102033 are intentionally absent and require the future covered-person tracking workflow.
 # SmartPresence

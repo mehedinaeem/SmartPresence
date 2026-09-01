@@ -1,0 +1,13 @@
+{
+  "facenet_model": "Facenet",
+  "detector": "mtcnn",
+  "align": true,
+  "normalization": "Facenet",
+  "unknown_confidence_threshold": 0.55,
+  "video_frame_interval_seconds": 3,
+  "attendance_threshold": 0.75,
+  "number_of_classes": 36,
+  "model_file": "models/classifiers/face_classifier.pkl",
+  "label_encoder_file": "models/classifiers/label_encoder.pkl",
+  "test_date": "2026-09-01T09:48:58.572787+00:00"
+}

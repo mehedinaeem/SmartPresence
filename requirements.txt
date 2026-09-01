@@ -8,7 +8,7 @@ pandas
 pillow
 pytest
 PyYAML
-scikit-learn
+scikit-learn==1.6.1
 tensorflow
 tf-keras
 tqdm
