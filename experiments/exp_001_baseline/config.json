@@ -1,0 +1,1 @@
+{"dataset_version":"legacy-migrated-v1","attendance_threshold":0.75,"experiment_frame_interval_seconds":3,"train_test_split":0.2,"random_state":42}

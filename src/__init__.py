@@ -1,0 +1,2 @@
+"""SmartPresence research attendance system."""
+

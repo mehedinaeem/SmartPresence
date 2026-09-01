@@ -1,0 +1,15 @@
+dataset_raw_uncovered: dataset/raw/uncovered
+dataset_raw_covered: dataset/raw/covered
+dataset_processed: dataset/processed
+dataset_rejected: dataset/rejected
+students_metadata: dataset/metadata/students.csv
+dataset_summary: dataset/metadata/dataset_summary.csv
+face_visibility: dataset/metadata/face_visibility.csv
+embeddings: models/embeddings/embeddings.pkl
+classifier: models/classifiers/face_classifier.pkl
+label_encoder: models/classifiers/label_encoder.pkl
+model_info: models/metadata/model_info.json
+outputs: outputs
+attendance_logs: attendance_logs
+experiments: experiments
+

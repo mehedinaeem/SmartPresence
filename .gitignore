@@ -1,0 +1,17 @@
+.venv/
+__pycache__/
+.ipynb_checkpoints/
+*.pyc
+.DS_Store
+
+# Large/local research artifacts (metadata and reproducible small outputs stay tracked)
+dataset/raw/
+dataset/processed/
+dataset/rejected/
+dataset/resized/
+dataset/test_videos/
+models/**/*.pkl
+outputs/videos/
+*.mp4
+*.zip
+

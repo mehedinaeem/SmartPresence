@@ -1,0 +1,14 @@
+deepface
+joblib
+matplotlib
+mtcnn
+numpy
+opencv-python
+pandas
+pillow
+pytest
+PyYAML
+scikit-learn
+tensorflow
+tf-keras
+tqdm

@@ -1,0 +1,37 @@
+PROJECT_NAME: SmartPresence
+FACE_SIZE:
+  width: 160
+  height: 160
+ATTENDANCE_THRESHOLD: 0.75
+EXPERIMENT_FRAME_INTERVAL_SECONDS: 3
+REALTIME_CCTV_FRAME_INTERVAL_SECONDS: 180
+TRAIN_TEST_SPLIT: 0.20
+RANDOM_STATE: 42
+FACE_DETECTION:
+  margin: 20
+  min_size: 40
+  min_sharpness: 20.0
+PREPROCESSING:
+  detector: mtcnn
+  face_size:
+    width: 160
+    height: 160
+  resize_mode: letterbox
+  padding_value: [0, 0, 0]
+  face_margin: 0.20
+  detection_confidence: 0.90
+  min_face_width: 40
+  min_face_height: 40
+  blur_check: true
+  blur_threshold: 20.0
+  brightness_check: true
+  min_brightness: 20.0
+  max_brightness: 240.0
+  multiple_face_dominance_ratio: 1.75
+  batch_size: 16
+  orientation_fallback_degrees: [90]
+RECOGNITION:
+  model_name: Facenet
+  embedding_dimension: 128
+  svm_kernel: linear
+  confidence_threshold: 0.50

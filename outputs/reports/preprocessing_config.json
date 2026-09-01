@@ -1,0 +1,26 @@
+{
+  "detector": "mtcnn",
+  "face_size": [
+    160,
+    160
+  ],
+  "face_margin": 0.2,
+  "detection_confidence": 0.9,
+  "minimum_face_size": [
+    40,
+    40
+  ],
+  "orientation_fallback_degrees": [
+    90
+  ],
+  "blur_threshold": 20.0,
+  "brightness_range": [
+    20.0,
+    240.0
+  ],
+  "processing_date": "2026-09-01T05:41:51.956548+00:00",
+  "students_total": 40,
+  "students_processed": 36,
+  "students_skipped_covered": 4,
+  "raw_sha256": "186b67be0dee008f186cf5004ad6dec0887da82db55b6118d96cb8e2c9c3491d"
+}
