@@ -9,6 +9,6 @@ dataset/raw/
 dataset/rejected/
 dataset/resized/
 models/**/*.pkl
-*.mp4
+
 *.zip
 
