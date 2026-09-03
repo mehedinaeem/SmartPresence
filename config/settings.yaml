@@ -43,3 +43,11 @@ TESTING:
   video_frame_interval_seconds: 3
   attendance_threshold: 0.75
   show_preview: false
+TRACKING:
+  model: models/tracking/yolo11n.pt
+  tracker: bytetrack.yaml
+  person_class_id: 0
+  confidence_threshold: 0.40
+  inference_size: 640
+  show_preview: true
+  sample_frame_count: 3
