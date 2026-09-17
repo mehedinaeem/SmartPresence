@@ -119,11 +119,41 @@ The older `CoveredFaceTracker` remains an **OpenCV HOG + centroid matching basel
 
 ### Fingerprint, sessions, and identity association
 
-`FingerprintDatabase` reads active students from `students.csv`. `verify_fingerprint()` resolves an already-produced fingerprint ID to a roll number; scanner enrollment, template storage, and biometric matching require a hardware adapter. Fingerprint templates never enter FaceNet or YOLO.
+`FingerprintDatabase` validates the static `fingerprint_database.csv` against authoritative `students.csv` metadata. `verify_fingerprint()` returns a structured identity with a `verified` flag, or a failure reason. Unknown IDs and inactive records cannot create sessions through the demo. Fingerprint template IDs are simulated labels; no templates enter FaceNet or YOLO.
 
 `start_session()` creates a UUID and appends an entry record to `attendance_logs/session_records.csv`; `record_exit()` appends an exit record. `IdentityMapper.associate()` can hold a mapping of track ID to roll number, session, entry time, and face status in memory. Selecting the correct person at entry, persisting/recovering that mapping, and handling lost or switched tracks still require integration.
 
 Despite its name, `scripts/10_run_full_system.py` currently performs only fingerprint-ID lookup and session creation. It does not launch recognition, tracking, or final attendance calculation.
+
+### Static Fingerprint Demonstration
+
+Fingerprint IDs `FP001`–`FP040` simulate successful scanner-produced IDs, each deterministically mapped to one enrolled student. The 40 records in `dataset/metadata/fingerprint_database.csv` are generated from `students.csv`, with template labels `T001`–`T040` and simulated finger `right_index`. The database validates the exact identity ranges, unique IDs, statuses, and face-status agreement before lookup. Input is trimmed and converted to uppercase.
+
+This **simulated fingerprint verification** demonstrates identity association and informational routing only. No fingerprint image matching is performed; hardware biometric acquisition is outside this prototype stage. It does not measure fingerprint recognition performance or launch either vision branch.
+
+```text
+FP030 → 22102030 → Covered   → YOLO + ByteTrack
+FP017 → 22102017 → Uncovered → FaceNet + SVM
+```
+
+```bash
+# Interactive demo:
+python scripts/test_static_fingerprint.py
+# Direct lookup (no session is created by default):
+python scripts/test_static_fingerprint.py FP030
+# Optionally append a session using the existing session manager:
+python scripts/test_static_fingerprint.py FP030 --create-session
+# Failure example:
+python scripts/test_static_fingerprint.py FP999
+```
+
+Unknown and empty IDs return `NOT VERIFIED`; inactive records return `Student fingerprint record is inactive`. Neither creates a session. Exit codes are 0 for verified, 1 for unsuccessful verification/cancellation, and 2 for configuration or file errors. Session creation appends to `attendance_logs/session_records.csv` and preserves existing entries.
+
+To explicitly regenerate the static mapping after an authoritative metadata change (this replaces the generated CSV):
+
+```bash
+python -c "from src.fingerprint.fingerprint_database import generate_fingerprint_database; generate_fingerprint_database()"
+```
 
 ### Attendance calculation
 

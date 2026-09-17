@@ -3,6 +3,7 @@ dataset_raw_covered: dataset/raw/covered
 dataset_processed: dataset/processed
 dataset_rejected: dataset/rejected
 students_metadata: dataset/metadata/students.csv
+fingerprint_database: dataset/metadata/fingerprint_database.csv
 dataset_summary: dataset/metadata/dataset_summary.csv
 face_visibility: dataset/metadata/face_visibility.csv
 embeddings: models/embeddings/embeddings.pkl
