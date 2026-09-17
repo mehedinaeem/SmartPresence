@@ -1,3 +1,4 @@
+"""LEGACY BASELINE: HOG/centroid tracking; current method is YOLO11n + ByteTrack."""
 from src.tracking.person_detector import PersonDetector
 from src.tracking.tracker import CentroidTracker
 

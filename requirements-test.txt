@@ -1,0 +1,8 @@
+# Lightweight verification only; not the FaceNet/YOLO runtime environment.
+pytest
+PyYAML
+numpy
+pandas
+joblib
+scikit-learn==1.6.1
+opencv-python-headless

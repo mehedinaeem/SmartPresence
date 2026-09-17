@@ -1,3 +1,9 @@
+"""Explicit, session-scoped associations only: track 7 never implies roll 22102007.
+
+Callers must verify the student/session before association. This in-memory mapping
+is not authentication, cross-camera re-identification, or automatic identity inference.
+Use a fresh mapper for each session/stream; IDs can be reused by trackers.
+"""
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass

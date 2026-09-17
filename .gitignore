@@ -12,3 +12,9 @@ models/**/*.pkl
 
 *.zip
 
+
+# Future private data; already tracked files require a separate release review.
+dataset/processed/
+test_data/private/
+experiments/**/*.pkl
+.pytest_cache/

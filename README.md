@@ -1,6 +1,6 @@
 # SmartPresence
 
-SmartPresence is a hybrid attendance research project combining face recognition, person tracking, fingerprint identity lookup, and presence-based attendance. Permanent student identity is a `roll_number`; a body-tracking `track_id` is temporary and does not identify a student by itself.
+SmartPresence is a hybrid attendance research prototype combining face recognition, person tracking, fingerprint identity lookup, and presence-based attendance. Permanent student identity is a `roll_number`; a body-tracking `track_id` is temporary and does not identify a student by itself.
 
 The repository currently provides working face-recognition tests and an independent **YOLO11n + ByteTrack** body-tracking workflow. Fingerprint/session and track-to-student mapping utilities are present, but automatic fingerprint-to-track association and a unified attendance pipeline are not yet connected.
 
@@ -11,7 +11,7 @@ flowchart TD
     A[Uncovered student images] --> B[MTCNN face detection and quality checks]
     B --> C[160 × 160 face crops]
     C --> D[FaceNet: 128-dimensional embeddings]
-    D --> E[SVM classifier: student roll number]
+    D --> E[L2 Normalizer + RBF SVM: student roll number]
     F[Recorded classroom video] --> G[Sample faces every 3 seconds]
     G --> E
     E --> H[Count recognized samples per student]
@@ -96,11 +96,11 @@ That run reports **99.49% held-out accuracy** and **99.36% macro F1**. These are
 4. Resize accepted crops to 160 × 160 using aspect-preserving letterboxing; preserve rejected images and write manifests.
 5. Extract FaceNet embeddings, train an SVM, and evaluate a held-out split.
 6. For local inference, use aligned MTCNN detections and DeepFace `Facenet` normalization. The recognizer avoids applying embedding normalization twice when the saved pipeline already contains a `Normalizer`.
-7. Return `Unknown` when the highest classifier probability is below **0.55**; otherwise return the decoded roll and confidence.
+7. Return `Unknown` when the highest classifier probability is below **0.55**, a configurable prototype threshold that has not been calibrated; otherwise return the decoded roll and confidence.
 
 The current preprocessing report records 640 no-face failures, 255 low-confidence detections, 31 undersized faces, and one ambiguous multi-face image. The orientation fallback recovered 68 images.
 
-**Training paths differ:** `scripts/03_train_model.py` currently trains a plain SVC using `RECOGNITION.svm_kernel: linear`, whereas the imported Colab artifact uses the normalized RBF pipeline described above. The generic embedding adapter also does not explicitly select the local inference path's `Facenet` normalization. Running the numbered training scripts overwrites classifier artifacts and is not an exact reproduction of the imported model; align preprocessing, normalization, and classifier settings before comparing runs.
+**Future training configuration:** processed crop → FaceNet (`normalization="Facenet"`) → 128-D embedding → sklearn L2 Normalizer → RBF SVM (`C=10`, `gamma=scale`, balanced classes, seed 42, 20% test split). Normalization of input pixels and L2 normalization of embeddings are separate operations. The existing inference logic avoids double L2 normalization. The historical Colab metadata does not explicitly record input normalization, so exact historical reproduction remains unverified. New runs preserve their dataset manifest and do not replace the imported artifacts.
 
 ### YOLO11n + ByteTrack body tracking
 
@@ -209,16 +209,16 @@ python scripts/08_test_body_tracking.py --camera --camera-index 0
 
 ### Run preprocessing and research training
 
-These commands generate or replace model artifacts; preserve existing models and completed experiment results first. Review the training-path differences above before retraining.
+Preprocessing still replaces its local processed dataset and reports when explicitly invoked; archive a dataset version first. Future embedding, training, and evaluation commands reserve new run directories and refuse reused IDs. No retraining happens during validation or installation.
 
 ```bash
 python scripts/01_preprocess_dataset.py
-python scripts/02_extract_embeddings.py
-python scripts/03_train_model.py
-python scripts/04_evaluate_model.py
+python scripts/02_extract_embeddings.py --run-id embeddings_example
+python scripts/03_train_model.py --embeddings experiments/embeddings_example/embeddings.pkl --run-id training_example
+python scripts/04_evaluate_model.py --training-run experiments/training_example --run-id evaluation_example
 ```
 
-Preprocessing writes its report before embedding extraction. Training saves embeddings/classifier-related artifacts under `models/`, including a held-out evaluation split; evaluation uses that saved split without retraining. Keep completed experiment directories and create a new named experiment for each comparison.
+Training saves its classifier, encoder, exact split and provenance under `experiments/<run_id>/`; evaluation reads the selected training run and writes a separate new run. See [experiments/README.md](experiments/README.md) for the manifest schema and historical dataset distinctions. Existing inference commands continue to use the imported artifacts in `models/`.
 
 ### Supporting entry points
 
@@ -228,11 +228,11 @@ python scripts/06_test_group_image.py dataset/test_images/group/example.jpg
 # Frame-sampling demonstration only; its callback does not run recognition:
 python scripts/07_test_video.py dataset/test_videos/classroom.mp4 --mode experiment
 # Calculate attendance from an already-populated session presence log:
-python scripts/08_calculate_attendance.py
+python scripts/09_calculate_attendance.py
 # Older HOG/centroid tracking baseline:
-python scripts/09_run_covered_face_tracking.py dataset/test_videos/classroom.mp4
+python scripts/10_run_covered_face_tracking.py dataset/test_videos/classroom.mp4
 # Fingerprint lookup and session creation only:
-python scripts/10_run_full_system.py FP001
+python scripts/11_start_fingerprint_session.py FP001
 ```
 
 ## Configuration and repository layout
@@ -251,7 +251,7 @@ python scripts/10_run_full_system.py FP001
 | `TRACKING.model` / `TRACKING.tracker` | `models/tracking/yolo11n.pt` / `bytetrack.yaml` | Body tracker |
 | `TRACKING.confidence_threshold` / `inference_size` | 0.40 / 640 | Person detection |
 
-The generic and local-testing sampling/attendance settings are separate keys; update both when changing the shared experimental policy. `TRACKING.sample_frame_count` is currently not read by the runner; example frames are selected explicitly in its code.
+The generic and local-testing sampling/attendance keys share YAML anchors in `config/settings.yaml`; validation checks that they agree. `TRACKING.sample_frame_count` is currently not read by the runner; example frames are selected explicitly in its code.
 
 - `src/`: reusable preprocessing, recognition, tracking, fingerprint, attendance, video, and utility modules.
 - `scripts/`: research steps and local testing commands.
@@ -263,3 +263,24 @@ The generic and local-testing sampling/attendance settings are separate keys; up
 - `notebooks/`: analysis workspace. Publication figures belong in `outputs/figures/paper/`, derived from saved results and exported on a white background at 300 DPI.
 
 See [migration_report.md](outputs/reports/migration_report.md) for the legacy-data audit. Current remaining work is hardware fingerprint integration, reliable student-to-track association, recovery after tracking loss, and orchestration of both vision branches into session attendance. Existing classification metrics do not validate those unfinished stages.
+
+## Reproducibility
+
+Use Python 3.11 for the research runtime; install with `python -m pip install -r requirements.txt` in a fresh virtual environment. Keep `scikit-learn==1.6.1` for serialized model compatibility. `config/settings.yaml` and `config/paths.yaml` are authoritative configuration; actual dependency versions are captured in every future run manifest. `environment_versions.json` records only the cleanup test environment, not the unknown historical Colab environment. It is not a full model-runtime lockfile.
+
+The model is a **36-class FaceNet-SVM recognition model within a 40-participant SmartPresence evaluation**. Fingerprint lookup is simulated; face recognition, independent body tracking and attendance calculations are implemented prototype components. Their automatic identity association and hardware integration remain future work.
+
+```bash
+python scripts/validate_research_repository.py
+pytest -q
+python -m compileall -q src scripts
+python scripts/research_status.py
+```
+
+Training/evaluation, inference, tracking and static fingerprint commands are listed above. The preferred numbered sequence uses `09_calculate_attendance.py`, `10_run_covered_face_tracking.py` (legacy baseline), and `11_start_fingerprint_session.py`. Historical `08_calculate_attendance.py`, `09_run_covered_face_tracking.py`, and `10_run_full_system.py` remain compatible. `12_run_full_system.py` is an explicit session-initialization alias, not an integrated pipeline.
+
+For future threshold calibration, provide independent known/unknown validation-score CSVs with a `confidence` column to `python scripts/evaluate_unknown_threshold.py --known known.csv --unknown unknown.csv`. This reports face known/unknown acceptance trade-offs, not correct student-identification accuracy, and never changes the configured 0.55 threshold. Without both datasets it exits without calibration.
+
+Research training/evaluation outputs use fresh directories. Existing inference/tracking demos retain their established output locations and may overwrite demo reports; preserve them before rerunning. Do not treat demo output as immutable final results.
+
+See [model documentation](models/README.md), [privacy review](DATA_PRIVACY.md), [license decision](LICENSE_RECOMMENDATION.md), and the [submission checklist](docs/JOURNAL_REPRODUCIBILITY_CHECKLIST.md). Ignore rules do not remove the 6,901 processed images already tracked by Git. Review permission and repository history before publication. No code license or ethics approval is asserted by this cleanup.

@@ -5,8 +5,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from src.fingerprint.verification import verify_fingerprint
 from src.attendance.session_manager import start_session
 
-parser=argparse.ArgumentParser(); parser.add_argument("fingerprint_id")
+parser=argparse.ArgumentParser(description="Simulated fingerprint/session initialization only; no vision pipelines."); parser.add_argument("fingerprint_id")
 if __name__ == "__main__":
+    print("This command currently demonstrates fingerprint/session initialization only.")
     args=parser.parse_args(); result=verify_fingerprint(args.fingerprint_id)
     if not result["verified"]: raise SystemExit("Fingerprint verification failed")
     roll = result["roll_number"]

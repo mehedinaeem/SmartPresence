@@ -1,0 +1,40 @@
+{
+  "python": "3.11.16",
+  "platform": "Linux-7.0.0-31-generic-x86_64-with-glibc2.43",
+  "packages": {
+    "deepface": null,
+    "tensorflow": null,
+    "tf-keras": null,
+    "mtcnn": null,
+    "numpy": "2.4.6",
+    "scipy": "1.17.1",
+    "scikit-learn": "1.6.1",
+    "joblib": "1.6.0",
+    "opencv-python": "5.0.0.93",
+    "pandas": "3.0.5",
+    "Pillow": null,
+    "ultralytics": null,
+    "torch": null,
+    "PyYAML": "6.0.3",
+    "pytest": "9.1.1"
+  },
+  "scope": "Cleanup lightweight test environment only; not the historical Colab or full vision runtime environment.",
+  "all_installed_distributions": {
+    "cloudpickle": "3.1.2",
+    "iniconfig": "2.3.0",
+    "joblib": "1.6.0",
+    "numpy": "2.4.6",
+    "opencv-python": "5.0.0.93",
+    "packaging": "26.3",
+    "pandas": "3.0.5",
+    "pluggy": "1.6.0",
+    "Pygments": "2.21.0",
+    "pytest": "9.1.1",
+    "python-dateutil": "2.9.0.post0",
+    "PyYAML": "6.0.3",
+    "scikit-learn": "1.6.1",
+    "scipy": "1.17.1",
+    "six": "1.17.0",
+    "threadpoolctl": "3.7.0"
+  }
+}

@@ -1,3 +1,4 @@
+"""LEGACY BASELINE: HOG/centroid tracking; current method is YOLO11n + ByteTrack."""
 from __future__ import annotations
 
 import cv2

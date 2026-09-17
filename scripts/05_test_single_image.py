@@ -1,17 +1,20 @@
-import sys
+"""Recognize faces through the existing MTCNN/FaceNet/SVM inference API."""
+import argparse
 from pathlib import Path
+import sys
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-import argparse, cv2
-from src.preprocessing.face_detector import FaceDetector
-from src.preprocessing.face_cropper import crop_face
-from src.recognition.face_recognizer import FaceRecognizer
-from src.utils.paths import settings
 
-parser=argparse.ArgumentParser(); parser.add_argument("image")
 if __name__ == "__main__":
-    args=parser.parse_args(); image=cv2.imread(args.image)
-    if image is None: raise FileNotFoundError(args.image)
-    boxes=FaceDetector().detect(image)
-    if not boxes: raise RuntimeError("No face detected")
-    cfg=settings(); face=crop_face(image,max(boxes,key=lambda b:b[2]*b[3]),cfg["FACE_DETECTION"]["margin"],(cfg["FACE_SIZE"]["width"],cfg["FACE_SIZE"]["height"]))
-    print(dict(zip(("roll_number","confidence"),FaceRecognizer().recognize(face))))
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("image", type=Path)
+    args = parser.parse_args()
+    import cv2
+    from src.recognition.face_recognizer import FaceRecognizer
+    frame = cv2.imread(str(args.image))
+    if frame is None:
+        raise SystemExit(f"Cannot read image: {args.image}")
+    detections = FaceRecognizer().recognize_faces(frame)
+    if not detections:
+        print("No faces detected")
+    for result in detections:
+        print(result.to_dict())

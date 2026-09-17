@@ -1,0 +1,8 @@
+cff-version: 1.2.0
+message: "Research software repository. Confirm author metadata and cite the exact commit used; no associated publication is asserted."
+title: "SmartPresence"
+type: software
+repository-code: "https://github.com/mehedinaeem/SmartPresence"
+abstract: "Hybrid attendance research prototype with static fingerprint identity mapping, FaceNet-SVM recognition, person tracking and presence-based attendance."
+authors:
+  - name: "TODO: Confirm software authors before citation"
