@@ -1,0 +1,20 @@
+{
+  "processing_mode": "full_inference",
+  "total_processed_frames": 300,
+  "total_raw_track_ids": 5,
+  "total_stable_identities": 5,
+  "raw_id_changes_per_stable_identity": {
+    "S001": 0,
+    "S002": 0,
+    "S003": 0,
+    "S004": 0,
+    "S005": 0
+  },
+  "very_short_raw_tracks_lt_5_frames": 0,
+  "longest_stable_trajectory_visible_frames": 300,
+  "average_processing_fps": 2.130021704002698,
+  "elapsed_processing_seconds": 140.84363527200003,
+  "source_fps": 30.0,
+  "summed_person_visible_seconds": 43.333333333333336,
+  "disclaimer": "Tracking continuity statistics are descriptive and do not represent IDF1, HOTA, MOTA, or identity accuracy."
+}

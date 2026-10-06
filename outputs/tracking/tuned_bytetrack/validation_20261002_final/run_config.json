@@ -1,0 +1,27 @@
+{
+  "processing_mode": "cached_raw_observation_replay",
+  "source_run": "/home/mehedinaeem/Desktop/Code/SmartPresence/outputs/tracking/tuned_bytetrack/validation_20261002",
+  "source_raw_log_sha256": "4cd6813cab425cb5d4807cb28550dfe7781f436dd4b75911407be0dd6cca2013",
+  "video_sha256": "67f6ef48c676a1fe33a59af68eb1a8b6e75582c33337b0c9da417c1a9fb865dc",
+  "stable_identity": {
+    "enabled": true,
+    "max_missing_frames": 120,
+    "max_reassociation_gap_frames": 120,
+    "min_iou_for_reassociation": 0.3,
+    "max_center_distance_ratio": 0.35,
+    "min_size_ratio": 0.65,
+    "max_size_ratio": 1.55,
+    "overlap_iou_threshold": 0.2,
+    "appearance_enabled": true,
+    "appearance_similarity_threshold": 0.9,
+    "appearance_history_size": 20,
+    "min_appearance_samples": 2,
+    "min_appearance_confidence": 0.45,
+    "motion_enabled": true,
+    "motion_prediction_frames": 5,
+    "geometry_only_max_gap_frames": 2,
+    "geometry_only_min_iou": 0.7,
+    "geometry_only_max_center_distance_ratio": 0.15
+  },
+  "note": "No YOLO inference performed. Processing FPS measures replay/encoding only."
+}

@@ -31,8 +31,8 @@ def test_research_defaults_and_saved_metadata():
     assert info["train_samples"] + info["test_samples"] == info["successful_embeddings"]
     assert info["student_count"] == len([s for s in students() if s["face_status"] == "uncovered"]) == 36
     assert cfg["TRACKING"]["person_class_id"] == 0
-    assert cfg["TRACKING"]["tracker"] == "bytetrack.yaml"
-    assert Path(cfg["TRACKING"]["model"]).name == "yolo11n.pt"
+    assert cfg["TRACKING"]["tracker"] == "config/bytetrack_smartpresence.yaml"
+    assert Path(cfg["TRACKING"]["model"]).name == "yolo11s.pt"
     assert cfg["TESTING"]["attendance_threshold"] == cfg["ATTENDANCE_THRESHOLD"] == .75
     assert cfg["TESTING"]["video_frame_interval_seconds"] == cfg["EXPERIMENT_FRAME_INTERVAL_SECONDS"] == 3
     assert cfg["REALTIME_CCTV_FRAME_INTERVAL_SECONDS"] == 180
@@ -194,7 +194,7 @@ def test_tracking_processes_consecutive_frames_without_model_download(monkeypatc
         tracker.track(frame)
     assert yolo.track.call_count == 4
     assert yolo.track.call_args.kwargs["persist"] is True
-    assert yolo.track.call_args.kwargs["tracker"] == "bytetrack.yaml"
+    assert Path(yolo.track.call_args.kwargs["tracker"]).name == "bytetrack_smartpresence.yaml"
     assert yolo.track.call_args.kwargs["classes"] == [0]
 
 

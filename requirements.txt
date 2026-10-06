@@ -12,4 +12,4 @@ scikit-learn==1.6.1
 tensorflow
 tf-keras
 tqdm
-ultralytics
+ultralytics==8.4.138

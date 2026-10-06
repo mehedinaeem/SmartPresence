@@ -1,0 +1,123 @@
+
+Video: test_video_02.mp4
+Frame: 1 | Active tracks: [1, 2, 3, 4]
+Frame: 100 | Active tracks: [1, 2, 3, 4]
+Traceback (most recent call last):
+  File "/home/mehedinaeem/Desktop/Code/SmartPresence/scripts/08_test_body_tracking.py", line 300, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/home/mehedinaeem/Desktop/Code/SmartPresence/scripts/08_test_body_tracking.py", line 294, in main
+    succeeded = sum(process_video(path, tracker, output_root, show_preview, max_frames=args.max_frames) for path in videos)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mehedinaeem/Desktop/Code/SmartPresence/scripts/08_test_body_tracking.py", line 294, in <genexpr>
+    succeeded = sum(process_video(path, tracker, output_root, show_preview, max_frames=args.max_frames) for path in videos)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mehedinaeem/Desktop/Code/SmartPresence/scripts/08_test_body_tracking.py", line 123, in process_video
+    tracks = tracker.track(frame, timestamp_seconds=(frame_number - 1) / fps)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mehedinaeem/Desktop/Code/SmartPresence/src/tracking/person_tracker.py", line 87, in track
+    results = self.model.track(
+              ^^^^^^^^^^^^^^^^^
+  File "/home/mehedinaeem/Desktop/Code/SmartPresence/.venv/lib/python3.11/site-packages/ultralytics/engine/model.py", line 586, in track
+    return self.predict(source=source, stream=stream, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mehedinaeem/Desktop/Code/SmartPresence/.venv/lib/python3.11/site-packages/ultralytics/engine/model.py", line 544, in predict
+    return self.predictor.predict_cli(source=source) if is_cli else self.predictor(source=source, stream=stream)
+                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mehedinaeem/Desktop/Code/SmartPresence/.venv/lib/python3.11/site-packages/ultralytics/engine/predictor.py", line 241, in __call__
+    return list(self.stream_inference(source, model, *args, **kwargs))  # merge list of Results into one
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mehedinaeem/Desktop/Code/SmartPresence/.venv/lib/python3.11/site-packages/torch/utils/_contextlib.py", line 40, in generator_context
+    response = gen.send(None)
+               ^^^^^^^^^^^^^^
+  File "/home/mehedinaeem/Desktop/Code/SmartPresence/.venv/lib/python3.11/site-packages/ultralytics/engine/predictor.py", line 349, in stream_inference
+    preds = self.inference(im, *args, **kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mehedinaeem/Desktop/Code/SmartPresence/.venv/lib/python3.11/site-packages/ultralytics/engine/predictor.py", line 198, in inference
+    return self.model(im, *args, augment=self.args.augment, embed=self.args.embed, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mehedinaeem/Desktop/Code/SmartPresence/.venv/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1783, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mehedinaeem/Desktop/Code/SmartPresence/.venv/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1794, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mehedinaeem/Desktop/Code/SmartPresence/.venv/lib/python3.11/site-packages/ultralytics/nn/autobackend.py", line 318, in forward
+    y = self.backend.forward(im, **forward_kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mehedinaeem/Desktop/Code/SmartPresence/.venv/lib/python3.11/site-packages/ultralytics/nn/backends/pytorch.py", line 93, in forward
+    return self.model(im, augment=augment, embed=embed, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mehedinaeem/Desktop/Code/SmartPresence/.venv/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1783, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mehedinaeem/Desktop/Code/SmartPresence/.venv/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1794, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mehedinaeem/Desktop/Code/SmartPresence/.venv/lib/python3.11/site-packages/ultralytics/nn/tasks.py", line 157, in forward
+    return self.predict(x, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mehedinaeem/Desktop/Code/SmartPresence/.venv/lib/python3.11/site-packages/ultralytics/nn/tasks.py", line 173, in predict
+    return self._predict_once(x, profile, embed)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mehedinaeem/Desktop/Code/SmartPresence/.venv/lib/python3.11/site-packages/ultralytics/nn/tasks.py", line 194, in _predict_once
+    x = m(x)  # run
+        ^^^^
+  File "/home/mehedinaeem/Desktop/Code/SmartPresence/.venv/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1783, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mehedinaeem/Desktop/Code/SmartPresence/.venv/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1794, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mehedinaeem/Desktop/Code/SmartPresence/.venv/lib/python3.11/site-packages/ultralytics/nn/modules/block.py", line 1495, in forward
+    b = self.m(b)
+        ^^^^^^^^^
+  File "/home/mehedinaeem/Desktop/Code/SmartPresence/.venv/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1783, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mehedinaeem/Desktop/Code/SmartPresence/.venv/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1794, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mehedinaeem/Desktop/Code/SmartPresence/.venv/lib/python3.11/site-packages/torch/nn/modules/container.py", line 259, in forward
+    input = module(input)
+            ^^^^^^^^^^^^^
+  File "/home/mehedinaeem/Desktop/Code/SmartPresence/.venv/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1783, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mehedinaeem/Desktop/Code/SmartPresence/.venv/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1794, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mehedinaeem/Desktop/Code/SmartPresence/.venv/lib/python3.11/site-packages/ultralytics/nn/modules/block.py", line 1385, in forward
+    x = x + self.ffn(x) if self.add else self.ffn(x)
+            ^^^^^^^^^^^
+  File "/home/mehedinaeem/Desktop/Code/SmartPresence/.venv/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1783, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mehedinaeem/Desktop/Code/SmartPresence/.venv/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1794, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mehedinaeem/Desktop/Code/SmartPresence/.venv/lib/python3.11/site-packages/torch/nn/modules/container.py", line 259, in forward
+    input = module(input)
+            ^^^^^^^^^^^^^
+  File "/home/mehedinaeem/Desktop/Code/SmartPresence/.venv/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1783, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mehedinaeem/Desktop/Code/SmartPresence/.venv/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1794, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mehedinaeem/Desktop/Code/SmartPresence/.venv/lib/python3.11/site-packages/ultralytics/nn/modules/conv.py", line 89, in forward_fuse
+    return self.act(self.conv(x))
+                    ^^^^^^^^^^^^
+  File "/home/mehedinaeem/Desktop/Code/SmartPresence/.venv/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1783, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mehedinaeem/Desktop/Code/SmartPresence/.venv/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1794, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mehedinaeem/Desktop/Code/SmartPresence/.venv/lib/python3.11/site-packages/torch/nn/modules/conv.py", line 565, in forward
+    return self._conv_forward(input, self.weight, self.bias)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mehedinaeem/Desktop/Code/SmartPresence/.venv/lib/python3.11/site-packages/torch/nn/modules/conv.py", line 560, in _conv_forward
+    return F.conv2d(
+           ^^^^^^^^^
+KeyboardInterrupt

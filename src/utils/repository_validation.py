@@ -35,8 +35,8 @@ def validate_repository() -> list[tuple[str, str]]:
         check(cfg["TESTING"]["normalization"] == cfg["RECOGNITION"]["embedding_normalization"] == "Facenet", "explicit FaceNet input normalization")
         params = classifier_config(cfg)
         check(params == {"kernel": "rbf", "C": 10., "gamma": "scale", "class_weight": "balanced", "normalization": "l2", "random_state": 42, "test_size": .2}, "future training = L2 Normalizer + configured RBF SVM")
-        check(cfg["TRACKING"]["tracker"] == "bytetrack.yaml" and cfg["TRACKING"]["person_class_id"] == 0, "ByteTrack / person class 0")
-        check(Path(cfg["TRACKING"]["model"]).name == "yolo11n.pt", "YOLO11n model configured")
+        check(cfg["TRACKING"]["tracker"] in {"config/bytetrack_smartpresence.yaml", "config/botsort_smartpresence.yaml"} and cfg["TRACKING"]["person_class_id"] == 0, "supported tuned tracker / person class 0")
+        check(Path(cfg["TRACKING"]["model"]).name == "yolo11s.pt", "YOLO11s model configured")
         check((PROJECT_ROOT / cfg["TRACKING"]["model"]).is_file(), "YOLO model file available")
         check(cfg["TESTING"]["unknown_confidence_threshold"] == .55, "prototype unknown threshold = 0.55 (not calibrated)")
         for key in ("classifier", "label_encoder", "model_info", "students_metadata", "dataset_summary", "face_visibility", "fingerprint_database"):

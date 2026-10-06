@@ -1,0 +1,43 @@
+SmartPresence Research Repository Validation
+
+[PASS] 40 participant records
+[PASS] 36 uncovered participants
+[PASS] 4 covered participants
+[PASS] covered rolls match expected list
+[PASS] continuous roll range 22102001–22102040
+[PASS] attendance threshold = 75%
+[PASS] experiment sampling = 3 s
+[PASS] realtime sampling = 180 s
+[PASS] FaceNet dimension = 128
+[PASS] explicit FaceNet input normalization
+[PASS] future training = L2 Normalizer + configured RBF SVM
+[PASS] supported tuned tracker / person class 0
+[PASS] YOLO11s model configured
+[PASS] YOLO model file available
+[PASS] prototype unknown threshold = 0.55 (not calibrated)
+[PASS] classifier available
+[PASS] label_encoder available
+[PASS] model_info available
+[PASS] students_metadata available
+[PASS] dataset_summary available
+[PASS] face_visibility available
+[PASS] fingerprint_database available
+[PASS] metadata/preprocessing_summary.csv available
+[PASS] metadata/student_folder_mapping.csv available
+[PASS] metadata/processed_images.csv available
+[PASS] metadata/rejected_images.csv available
+[PASS] 40 unique static fingerprint mappings validated against students.csv
+[PASS] saved metadata dimension = 128
+[PASS] saved metadata describes 36 face classes
+[PASS] saved SVM metadata matches future training
+[PASS] saved split and seed match configuration
+[PASS] saved embedding and split counts agree
+[WARNING] local preprocessing snapshot (5737) differs from imported Colab embeddings (6901); these are distinct histories
+[WARNING] current processed files (6901) differ from preprocessing metadata (5737); freeze/reconcile provenance before training
+[WARNING] imported metadata does not explicitly record embedding normalization; future runs record it, historical equivalence is unverified
+[WARNING] experiments/exp_001_baseline/metrics.json: empty historical placeholder, not a result
+[PASS] existing preprocessing report available
+[WARNING] no LICENSE assigned; owner must choose code and data terms before release
+[WARNING] 6901 processed files already tracked by Git; .gitignore does not remove them or their history
+
+Metadata and existence checks only; model binaries were not loaded.

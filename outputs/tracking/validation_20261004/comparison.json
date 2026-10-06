@@ -1,0 +1,193 @@
+[
+  {
+    "mode": "baseline",
+    "full_inference_root": "outputs/tracking/baseline/validation_20261002",
+    "final_result_root": "outputs/tracking/baseline/validation_20261002",
+    "inference": {
+      "total_processed_frames": 2225,
+      "total_raw_track_ids": 26,
+      "total_stable_identities": 0,
+      "raw_id_changes_per_stable_identity": {},
+      "very_short_raw_tracks_lt_5_frames": 0,
+      "longest_stable_trajectory_visible_frames": 0,
+      "average_processing_fps": 15.936954341263725,
+      "elapsed_processing_seconds": 139.6126231119997,
+      "source_fps": 30.0,
+      "summed_person_visible_seconds": 357.43333333333334,
+      "disclaimer": "Tracking continuity statistics are descriptive and do not represent IDF1, HOTA, MOTA, or identity accuracy."
+    },
+    "final": {
+      "total_processed_frames": 2225,
+      "total_raw_track_ids": 26,
+      "total_stable_identities": 0,
+      "raw_id_changes_per_stable_identity": {},
+      "very_short_raw_tracks_lt_5_frames": 0,
+      "longest_stable_trajectory_visible_frames": 0,
+      "average_processing_fps": 15.936954341263725,
+      "elapsed_processing_seconds": 139.6126231119997,
+      "source_fps": 30.0,
+      "summed_person_visible_seconds": 357.43333333333334,
+      "disclaimer": "Tracking continuity statistics are descriptive and do not represent IDF1, HOTA, MOTA, or identity accuracy."
+    }
+  },
+  {
+    "mode": "tuned_bytetrack",
+    "full_inference_root": "outputs/tracking/tuned_bytetrack/validation_20261002",
+    "final_result_root": "outputs/tracking/tuned_bytetrack/validation_20261002_final",
+    "inference": {
+      "total_processed_frames": 2225,
+      "total_raw_track_ids": 8,
+      "total_stable_identities": 28,
+      "raw_id_changes_per_stable_identity": {
+        "S001": 0,
+        "S002": 0,
+        "S003": 0,
+        "S004": 0,
+        "S005": 0,
+        "S006": 0,
+        "S007": 3,
+        "S008": 0,
+        "S009": 0,
+        "S010": 0,
+        "S011": 0,
+        "S012": 0,
+        "S013": 0,
+        "S014": 0,
+        "S015": 0,
+        "S016": 0,
+        "S017": 0,
+        "S018": 0,
+        "S019": 0,
+        "S020": 0,
+        "S021": 0,
+        "S022": 0,
+        "S023": 0,
+        "S024": 0,
+        "S025": 0,
+        "S026": 0,
+        "S027": 0,
+        "S028": 0
+      },
+      "very_short_raw_tracks_lt_5_frames": 0,
+      "longest_stable_trajectory_visible_frames": 2225,
+      "average_processing_fps": 3.8021546452924486,
+      "elapsed_processing_seconds": 585.194503531,
+      "source_fps": 30.0,
+      "summed_person_visible_seconds": 375.76666666666665,
+      "disclaimer": "Tracking continuity statistics are descriptive and do not represent IDF1, HOTA, MOTA, or identity accuracy."
+    },
+    "final": {
+      "processing_mode": "cached_raw_observation_replay",
+      "total_processed_frames": 2225,
+      "total_raw_track_ids": 8,
+      "total_stable_identities": 8,
+      "raw_id_changes_per_stable_identity": {
+        "S001": 0,
+        "S002": 0,
+        "S003": 0,
+        "S004": 0,
+        "S005": 0,
+        "S006": 0,
+        "S007": 0,
+        "S008": 0
+      },
+      "very_short_raw_tracks_lt_5_frames": 0,
+      "longest_stable_trajectory_visible_frames": 2225,
+      "average_processing_fps": 91.36019766921223,
+      "elapsed_processing_seconds": 24.354150459000266,
+      "source_fps": 30.0,
+      "summed_person_visible_seconds": 375.76666666666665,
+      "disclaimer": "Tracking continuity statistics are descriptive and do not represent IDF1, HOTA, MOTA, or identity accuracy."
+    }
+  },
+  {
+    "mode": "stable_botsort",
+    "full_inference_root": "outputs/tracking/stable_botsort/validation_20261004_prefix300_cpu1",
+    "final_result_root": "outputs/tracking/stable_botsort/validation_20261004_prefix300_cpu1",
+    "inference": {
+      "processing_mode": "full_inference",
+      "total_processed_frames": 300,
+      "total_raw_track_ids": 5,
+      "total_stable_identities": 5,
+      "raw_id_changes_per_stable_identity": {
+        "S001": 0,
+        "S002": 0,
+        "S003": 0,
+        "S004": 0,
+        "S005": 0
+      },
+      "very_short_raw_tracks_lt_5_frames": 0,
+      "longest_stable_trajectory_visible_frames": 300,
+      "average_processing_fps": 2.130021704002698,
+      "elapsed_processing_seconds": 140.84363527200003,
+      "source_fps": 30.0,
+      "summed_person_visible_seconds": 43.333333333333336,
+      "disclaimer": "Tracking continuity statistics are descriptive and do not represent IDF1, HOTA, MOTA, or identity accuracy."
+    },
+    "final": {
+      "processing_mode": "full_inference",
+      "total_processed_frames": 300,
+      "total_raw_track_ids": 5,
+      "total_stable_identities": 5,
+      "raw_id_changes_per_stable_identity": {
+        "S001": 0,
+        "S002": 0,
+        "S003": 0,
+        "S004": 0,
+        "S005": 0
+      },
+      "very_short_raw_tracks_lt_5_frames": 0,
+      "longest_stable_trajectory_visible_frames": 300,
+      "average_processing_fps": 2.130021704002698,
+      "elapsed_processing_seconds": 140.84363527200003,
+      "source_fps": 30.0,
+      "summed_person_visible_seconds": 43.333333333333336,
+      "disclaimer": "Tracking continuity statistics are descriptive and do not represent IDF1, HOTA, MOTA, or identity accuracy."
+    }
+  },
+  {
+    "mode": "stable_botsort_reid",
+    "full_inference_root": "outputs/tracking/stable_botsort_reid/validation_20261004_prefix300_cpu1",
+    "final_result_root": "outputs/tracking/stable_botsort_reid/validation_20261004_prefix300_cpu1",
+    "inference": {
+      "processing_mode": "full_inference",
+      "total_processed_frames": 300,
+      "total_raw_track_ids": 5,
+      "total_stable_identities": 5,
+      "raw_id_changes_per_stable_identity": {
+        "S001": 0,
+        "S002": 0,
+        "S003": 0,
+        "S004": 0,
+        "S005": 0
+      },
+      "very_short_raw_tracks_lt_5_frames": 0,
+      "longest_stable_trajectory_visible_frames": 300,
+      "average_processing_fps": 2.1388721838291533,
+      "elapsed_processing_seconds": 140.26083571900017,
+      "source_fps": 30.0,
+      "summed_person_visible_seconds": 43.333333333333336,
+      "disclaimer": "Tracking continuity statistics are descriptive and do not represent IDF1, HOTA, MOTA, or identity accuracy."
+    },
+    "final": {
+      "processing_mode": "full_inference",
+      "total_processed_frames": 300,
+      "total_raw_track_ids": 5,
+      "total_stable_identities": 5,
+      "raw_id_changes_per_stable_identity": {
+        "S001": 0,
+        "S002": 0,
+        "S003": 0,
+        "S004": 0,
+        "S005": 0
+      },
+      "very_short_raw_tracks_lt_5_frames": 0,
+      "longest_stable_trajectory_visible_frames": 300,
+      "average_processing_fps": 2.1388721838291533,
+      "elapsed_processing_seconds": 140.26083571900017,
+      "source_fps": 30.0,
+      "summed_person_visible_seconds": 43.333333333333336,
+      "disclaimer": "Tracking continuity statistics are descriptive and do not represent IDF1, HOTA, MOTA, or identity accuracy."
+    }
+  }
+]

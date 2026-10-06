@@ -2,7 +2,7 @@
 
 SmartPresence is a hybrid attendance research prototype combining face recognition, person tracking, fingerprint identity lookup, and presence-based attendance. Permanent student identity is a `roll_number`; a body-tracking `track_id` is temporary and does not identify a student by itself.
 
-The repository currently provides working face-recognition tests and an independent **YOLO11n + ByteTrack** body-tracking workflow. Fingerprint/session and track-to-student mapping utilities are present, but automatic fingerprint-to-track association and a unified attendance pipeline are not yet connected.
+The repository currently provides working face-recognition tests and an independent **YOLO11s + ByteTrack/BoT-SORT** body-tracking workflow. Fingerprint/session and track-to-student mapping utilities are present, but automatic fingerprint-to-track association and a unified attendance pipeline are not yet connected.
 
 ## How the system works
 
@@ -16,12 +16,13 @@ flowchart TD
     G --> E
     E --> H[Count recognized samples per student]
     H --> I[Present when presence is at least 75%]
-    J[Consecutive video or webcam frames] --> K[YOLO11n person detection]
-    K --> L[ByteTrack: temporary person IDs]
-    L --> M[Annotated video and tracking reports]
+    J[Consecutive video or webcam frames] --> K[YOLO11s person detection]
+    K --> L[ByteTrack or BoT-SORT: raw track_id]
+    L --> Q[StableIdentityManager: session stable_id]
+    Q --> M[Annotated video and tracking reports]
     N[Scanner-produced fingerprint ID] --> O[Metadata lookup and session creation]
-    O -. integration required .-> P[Associate roll number with track ID]
-    L -. integration required .-> P
+    O -. explicit person selection .-> P[Verified roll bound to stable_id]
+    Q --> P
     P -. integration required .-> H
 ```
 
@@ -81,8 +82,8 @@ That run reports **99.49% held-out accuracy** and **99.36% macro F1**. These are
 | Face detection | MTCNN | Locate faces; local inference also uses alignment |
 | Face embeddings | DeepFace `Facenet`, TensorFlow / tf-keras | Convert faces into 128-dimensional feature vectors |
 | Identity classification | scikit-learn SVM and label encoder | Predict enrolled student roll numbers |
-| Person detection | Ultralytics YOLO11n, `models/tracking/yolo11n.pt` | Detect COCO person class 0 |
-| Person tracking | ByteTrack, `bytetrack.yaml` | Maintain temporary IDs across consecutive frames |
+| Person detection | Ultralytics YOLO11s, `models/tracking/yolo11s.pt` | Detect COCO person class 0 |
+| Person tracking | ByteTrack, `config/bytetrack_smartpresence.yaml` | Temporary raw IDs with conservative stream-scoped stable IDs |
 | Video and image processing | OpenCV, Pillow | Decode video, crop/resize images, draw and save results |
 | Data and reports | NumPy, pandas, CSV/JSON, Matplotlib | Store observations, calculate attendance, plot results |
 | Configuration and artifacts | PyYAML, joblib/pickle | Load settings and saved models |
@@ -102,26 +103,36 @@ The current preprocessing report records 640 no-face failures, 255 low-confidenc
 
 **Future training configuration:** processed crop → FaceNet (`normalization="Facenet"`) → 128-D embedding → sklearn L2 Normalizer → RBF SVM (`C=10`, `gamma=scale`, balanced classes, seed 42, 20% test split). Normalization of input pixels and L2 normalization of embeddings are separate operations. The existing inference logic avoids double L2 normalization. The historical Colab metadata does not explicitly record input normalization, so exact historical reproduction remains unverified. New runs preserve their dataset manifest and do not replace the imported artifacts.
 
-### YOLO11n + ByteTrack body tracking
+### YOLO11s + ByteTrack / BoT-SORT body tracking
 
-`src/tracking/person_tracker.py` loads YOLO11n and calls Ultralytics tracking with `persist=True`, ByteTrack, person class `0`, confidence `0.40`, and inference size `640`. Every consecutive frame is processed; the face-recognition 3-second/180-second sampling intervals do not apply to this tracker. Tracker state is reset between videos.
+`track_id` is a temporary raw tracker trajectory; `stable_id` (`S001`, `S002`, ...) is a SmartPresence session-level visual continuity identity; `roll_number` is the permanent enrolled student identity. The architecture is YOLO person detection → ByteTrack/BoT-SORT → raw `track_id` → `StableIdentityManager` → `stable_id` → optional verified fingerprint/session association → `roll_number`.
 
-Each observation contains a temporary `track_id`, detection confidence, and an `(x1, y1, x2, y2)` bounding box. The video runner saves:
+Defaults are `models/tracking/yolo11s.pt`, person class `0`, detector confidence `0.10`, inference size `960`, and `config/bytetrack_smartpresence.yaml`. Low-confidence detections reach the tracker for recovery. Both custom backends use high/low/new thresholds `0.45/0.10/0.55`, buffer `120`, match threshold `0.80`, and score fusion. BoT-SORT additionally uses fixed-camera `gmc_method: none`, proximity `0.50`, appearance `0.85`, `with_reid: true`, and `model: auto`. The tested backend is pinned to Ultralytics **8.4.138**. Model paths remain configurable; bare names use existing `models/tracking/` weights when available. `--require-local-model` rejects missing detector weights before construction, which prevents a detector download attempt. Otherwise Ultralytics may download recognized missing weights online; loading failures are reported with an explicit `--model models/tracking/yolo11n.pt` fallback suggestion. There is no silent fallback.
 
-- `outputs/tracking/videos/<video>_tracked.mp4`: annotated video with IDs and confidence.
-- `outputs/tracking/frames/`: first, middle, and final tracked-frame examples when available.
-- `outputs/tracking/reports/<video>_tracking_log.csv`: video name, frame, timestamp, ID, confidence, and box coordinates.
-- `outputs/tracking/reports/<video>_track_summary.csv`: first/last frame, visible-frame count, first/last time, and approximate visible duration (`frames_visible / FPS`).
+Every consecutive frame is processed with `persist=True`. One model and one stable manager live throughout each video/webcam session; both reset only between independent streams. The face-recognition 3-second/180-second observation intervals do not apply to tracking.
 
-Visible duration counts detected frames; it is not the complete elapsed span between first and last sightings. IDs can change or switch after occlusion or re-entry and are not permanent or cross-camera identities. The webcam command currently provides a live preview without the recorded-video reports.
+The manager retains lost candidates for 120 frames, checks time, position, size, IoU, bounded motion, and optional appearance history, and requires a unique match in both directions. All gates are explicit in `STABLE_IDENTITY`. The independent SmartPresence appearance encoder is an L2-normalized HSV torso descriptor with cosine similarity and recent history, not a learned person-ReID model. BoT-SORT's separate native-feature ReID runs inside Ultralytics; SmartPresence does not read private feature hooks. With no usable appearance, only a stricter short-gap geometry fallback is allowed. Ambiguous matches receive new stable IDs.
 
-The older `CoveredFaceTracker` remains an **OpenCV HOG + centroid matching baseline**, used by `scripts/09_run_covered_face_tracking.py`. It is separate from the new YOLO/ByteTrack runner.
+Each observation retains `track_id` and includes `stable_id`, nullable `roll_number`/`session_id`, confidence, and box coordinates. Annotation distinguishes `S003 | T19 | 91.0%` from a verified `22102030 | S003 | 91.0%`. New recorded runs go to `outputs/tracking/runs/<run-id>/` or a fresh `--output-root`:
+
+- `videos/<video>_tracked.mp4` and `frames/`: annotated video and snapshots.
+- `reports/<video>_tracking_log.csv`: per-frame raw/stable/student fields.
+- `reports/<video>_track_summary.csv`: preserved raw summary format.
+- `reports/<video>_stable_identity_summary.csv`: stable visibility, raw history/change count, optional student identity, final active/inactive state; `_stable_summary.csv` remains an alias.
+- `reports/<video>_continuity_report.csv` and `_continuity_statistics.json`: descriptive fragmentation, gap, visible-duration, and processing-speed statistics.
+- `run_config.json`: effective run configuration and backend version.
+
+Historical outputs are preserved; existing reports/videos are never overwritten. Visible duration counts only observed frames, not gaps. Webcam mode preserves state and provides preview without CSV export.
+
+Raw IDs can still change. Stable IDs reduce dependence on those IDs but cannot guarantee continuity after full occlusion, long disappearance, leaving the field of view, detector failure, similar-looking people crossing, severe pose changes, lighting changes, very small boxes, or long-interval re-entry. No raw or stable ID implies a roll number. Conservative matching prefers false splits over false merges. **Tracking continuity statistics are descriptive and do not represent IDF1, HOTA, MOTA, or identity accuracy.**
+
+The older `CoveredFaceTracker` remains an OpenCV HOG/centroid baseline used by scripts 09/10. See [the tracking design and audit](docs/tracking_identity_continuity.md) and [implementation/validation report](docs/tracking_implementation_report.md).
 
 ### Fingerprint, sessions, and identity association
 
 `FingerprintDatabase` validates the static `fingerprint_database.csv` against authoritative `students.csv` metadata. `verify_fingerprint()` returns a structured identity with a `verified` flag, or a failure reason. Unknown IDs and inactive records cannot create sessions through the demo. Fingerprint template IDs are simulated labels; no templates enter FaceNet or YOLO.
 
-`start_session()` creates a UUID and appends an entry record to `attendance_logs/session_records.csv`; `record_exit()` appends an exit record. `IdentityMapper.associate()` can hold a mapping of track ID to roll number, session, entry time, and face status in memory. Selecting the correct person at entry, persisting/recovering that mapping, and handling lost or switched tracks still require integration.
+`start_session()` creates a UUID and appends an entry record to `attendance_logs/session_records.csv`; `record_exit()` appends an exit record. `IdentityMapper.associate()` can hold a mapping of track ID to roll number, session, entry time, and face status in memory. The legacy API is retained for compatibility. For the new tracker, use `tracker.identity_manager.associate_verified(stable_id, verification_result, session_id)` after explicitly selecting the correct visible person. The manager delegates verified bindings to `StableIdentityMapper` and keeps them on the stable identity through accepted raw-ID changes. It binds the supplied verified `roll_number` to the stable ID, rejects conflicting bindings, and never derives a roll from a visual ID. Manager reset clears all bindings at a new stream; standalone mappers must also be replaced. The simulated verification result is not an authentication credential; automatic person selection and persistent mapping still require integration.
 
 Despite its name, `scripts/10_run_full_system.py` currently performs only fingerprint-ID lookup and session creation. It does not launch recognition, tracking, or final attendance calculation.
 
@@ -201,10 +212,26 @@ Place `.mp4`, `.avi`, `.mov`, or `.mkv` files in `test_data/videos/body_tracking
 
 ```bash
 python scripts/08_test_body_tracking.py --no-preview
+# Explicit tuned ByteTrack:
+python scripts/08_test_body_tracking.py --tracker bytetrack --no-preview
+# BoT-SORT with backend native-feature ReID:
+python scripts/08_test_body_tracking.py --tracker botsort --no-preview
+# Explicit model and detector settings:
+python scripts/08_test_body_tracking.py --tracker bytetrack --model models/tracking/yolo11s.pt --imgsz 960 --conf 0.10 --no-preview
+# Local-only detector loading and explicit smaller CPU fallback:
+python scripts/08_test_body_tracking.py --model yolo11n.pt --imgsz 640 --require-local-model --no-preview
+# Optional CPU thread limit (no model or threshold change):
+python scripts/08_test_body_tracking.py --tracker botsort --cpu-threads 1 --no-preview
+# Optional bounded diagnostic; no frame skipping within this prefix:
+python scripts/08_test_body_tracking.py --tracker botsort --max-frames 300 --no-preview
+# Disable only SmartPresence appearance (backend ReID follows its YAML):
+python scripts/08_test_body_tracking.py --tracker botsort --disable-appearance --no-preview
+# Raw-only diagnostic mode:
+python scripts/08_test_body_tracking.py --disable-stable-id --no-preview
 # Show the recorded-video preview; press Q to stop:
 python scripts/08_test_body_tracking.py --preview
 # Live webcam preview:
-python scripts/08_test_body_tracking.py --camera --camera-index 0
+python scripts/08_test_body_tracking.py --camera --camera-index 0 --tracker botsort
 ```
 
 ### Run preprocessing and research training
@@ -248,8 +275,8 @@ python scripts/11_start_fingerprint_session.py FP001
 | `TESTING.unknown_confidence_threshold` | 0.55 | Local face inference |
 | `TESTING.video_frame_interval_seconds` | 3 | Local face-video test |
 | `TESTING.attendance_threshold` | 0.75 | Local face-video attendance |
-| `TRACKING.model` / `TRACKING.tracker` | `models/tracking/yolo11n.pt` / `bytetrack.yaml` | Body tracker |
-| `TRACKING.confidence_threshold` / `inference_size` | 0.40 / 640 | Person detection |
+| `TRACKING.model` / `TRACKING.tracker` | `models/tracking/yolo11s.pt` / `config/bytetrack_smartpresence.yaml` | Body tracker |
+| `TRACKING.confidence_threshold` / `inference_size` | 0.10 / 960 | Person detection |
 
 The generic and local-testing sampling/attendance keys share YAML anchors in `config/settings.yaml`; validation checks that they agree. `TRACKING.sample_frame_count` is currently not read by the runner; example frames are selected explicitly in its code.
 
@@ -262,7 +289,7 @@ The generic and local-testing sampling/attendance keys share YAML anchors in `co
 - `tests/`: core configuration and identity tests; run `pytest tests/`.
 - `notebooks/`: analysis workspace. Publication figures belong in `outputs/figures/paper/`, derived from saved results and exported on a white background at 300 DPI.
 
-See [migration_report.md](outputs/reports/migration_report.md) for the legacy-data audit. Current remaining work is hardware fingerprint integration, reliable student-to-track association, recovery after tracking loss, and orchestration of both vision branches into session attendance. Existing classification metrics do not validate those unfinished stages.
+See [migration_report.md](outputs/reports/migration_report.md) for the legacy-data audit. Current remaining work is hardware fingerprint integration, reliable student-to-track association, ground-truth validation of tracking recovery, and orchestration of both vision branches into session attendance. Existing classification metrics do not validate those unfinished stages.
 
 ## Reproducibility
 
@@ -281,6 +308,6 @@ Training/evaluation, inference, tracking and static fingerprint commands are lis
 
 For future threshold calibration, provide independent known/unknown validation-score CSVs with a `confidence` column to `python scripts/evaluate_unknown_threshold.py --known known.csv --unknown unknown.csv`. This reports face known/unknown acceptance trade-offs, not correct student-identification accuracy, and never changes the configured 0.55 threshold. Without both datasets it exits without calibration.
 
-Research training/evaluation outputs use fresh directories. Existing inference/tracking demos retain their established output locations and may overwrite demo reports; preserve them before rerunning. Do not treat demo output as immutable final results.
+Research training/evaluation outputs use fresh directories. Existing face-inference demos retain their established output locations and may overwrite demo reports. Tracking now reserves fresh run directories and refuses existing output files. Do not treat demo output as immutable final results.
 
 See [model documentation](models/README.md), [privacy review](DATA_PRIVACY.md), [license decision](LICENSE_RECOMMENDATION.md), and the [submission checklist](docs/JOURNAL_REPRODUCIBILITY_CHECKLIST.md). Ignore rules do not remove the 6,901 processed images already tracked by Git. Review permission and repository history before publication. No code license or ethics approval is asserted by this cleanup.

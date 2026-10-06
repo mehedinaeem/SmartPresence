@@ -1,0 +1,6 @@
+stable_id,raw_track_count,raw_id_changes,longest_gap_frames,reassociation_count,total_visible_frames,start_frame,end_frame,roll_number
+S001,1,0,0,0,300,1,300,
+S002,1,0,0,0,300,1,300,
+S003,1,0,0,0,300,1,300,
+S004,1,0,56,1,244,1,300,
+S005,1,0,0,0,156,145,300,

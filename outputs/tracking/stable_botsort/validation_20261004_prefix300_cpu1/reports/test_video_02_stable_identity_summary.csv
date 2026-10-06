@@ -1,0 +1,6 @@
+stable_id,roll_number,session_id,raw_track_ids,first_frame,last_frame,frames_visible,first_seen_seconds,last_seen_seconds,approximate_visible_duration_seconds,number_of_raw_id_changes,final_state
+S001,,,1,1,300,300,0.000,9.967,10.000,0,active
+S002,,,2,1,300,300,0.000,9.967,10.000,0,active
+S003,,,3,1,300,300,0.000,9.967,10.000,0,active
+S004,,,4,1,300,244,0.000,9.967,8.133,0,active
+S005,,,6,145,300,156,4.800,9.967,5.200,0,active

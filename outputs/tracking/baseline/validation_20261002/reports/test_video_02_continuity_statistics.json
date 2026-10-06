@@ -1,0 +1,13 @@
+{
+  "total_processed_frames": 2225,
+  "total_raw_track_ids": 26,
+  "total_stable_identities": 0,
+  "raw_id_changes_per_stable_identity": {},
+  "very_short_raw_tracks_lt_5_frames": 0,
+  "longest_stable_trajectory_visible_frames": 0,
+  "average_processing_fps": 15.936954341263725,
+  "elapsed_processing_seconds": 139.6126231119997,
+  "source_fps": 30.0,
+  "summed_person_visible_seconds": 357.43333333333334,
+  "disclaimer": "Tracking continuity statistics are descriptive and do not represent IDF1, HOTA, MOTA, or identity accuracy."
+}

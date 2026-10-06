@@ -1,0 +1,10 @@
+{
+  "tuned_bytetrack": "python scripts/08_test_body_tracking.py --tracker bytetrack --no-preview",
+  "botsort_reid": "python scripts/08_test_body_tracking.py --tracker botsort --no-preview",
+  "webcam": "python scripts/08_test_body_tracking.py --camera --tracker botsort",
+  "local_cpu_fallback": "python scripts/08_test_body_tracking.py --model yolo11n.pt --imgsz 640 --require-local-model --no-preview",
+  "validated_botsort_no_reid_prefix": "python scripts/08_test_body_tracking.py --tracker outputs/tracking/stable_botsort/validation_20261002/botsort_no_reid.yaml --no-preview --require-local-model --max-frames 300 --cpu-threads 1 --output-root outputs/tracking/stable_botsort/validation_20261004_prefix300_cpu1",
+  "validated_botsort_reid_prefix": "python scripts/08_test_body_tracking.py --tracker botsort --no-preview --require-local-model --max-frames 300 --cpu-threads 1 --output-root outputs/tracking/stable_botsort_reid/validation_20261004_prefix300_cpu1",
+  "environment": "PYTHONPATH=.venv/lib/python3.11/site-packages YOLO_CONFIG_DIR=/tmp/smartpresence-yolo-oct04 OMP_NUM_THREADS=1; interpreter /tmp/smartpresence-tracking-tests/bin/python. Completed October 4 runs use --cpu-threads 1; earlier attempts with CPU affinity adjustments were stopped and excluded.",
+  "note": "Use a fresh output root on rerun; completed outputs are protected from overwriting."
+}

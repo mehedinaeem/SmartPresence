@@ -1,0 +1,51 @@
+{
+  "processing_mode": "full_inference",
+  "frame_limit": 300,
+  "python_version": "3.11.16",
+  "torch_version": "2.14.0+cpu",
+  "opencv_version": "5.0.0",
+  "cuda_available": false,
+  "source_sha256": {
+    "scripts/08_test_body_tracking.py": "f4ab30fc1ee34825ebb35e93bdc24b2bbdaf7faee2d66d617e746b612a679802",
+    "src/tracking/__init__.py": "765d74b80efa06d9f429e1f4636a2276282df3b8a3b1e8d00019bcafbacab0f1",
+    "src/tracking/appearance_encoder.py": "f8ba55178bdcf20db47c49fc5cea9246638312f8210fe48196daf62d9c9c49f5",
+    "src/tracking/covered_face_tracker.py": "ab1e461f193a03bddceb66bac419feb8503faae06838763b900ea66a393a7b56",
+    "src/tracking/identity_mapper.py": "c6ac491813fc8970d9a98d9d6bb94a8e3403e5228deb6ebba333d6087a1f4077",
+    "src/tracking/person_detector.py": "c7a1e309881546078efa46c00f2e2469028da7e2dcdde308b26d674900a1e442",
+    "src/tracking/person_tracker.py": "9369faabf48068daff05250022b386343f851bf6dc1facc2ce06143f5e574d5d",
+    "src/tracking/reporting.py": "1de1e1fe983e7224c75e077a3a7949826e968853af0f272147c144fafbe3c969",
+    "src/tracking/stable_identity.py": "9a332bac8e322135cbc5015d88f4f6076cf322475ce7a7fa060611e46692ba77",
+    "src/tracking/stable_identity_manager.py": "86c57b2011225025dffbff2a08b3b103b7ee64d1d673e7fbfa673bffa7b91daf",
+    "src/tracking/tracker.py": "3028a12ad18c166e4b938626eed5db32227b9f8370aba9bb5c51c08aea555176"
+  },
+  "model_sha256": "85a76fe86dd8afe384648546b56a7a78580c7cb7b404fc595f97969322d502d5",
+  "input_video_sha256": {
+    "/home/mehedinaeem/Desktop/Code/SmartPresence/test_data/videos/body_tracking/test_video_02.mp4": "67f6ef48c676a1fe33a59af68eb1a8b6e75582c33337b0c9da417c1a9fb865dc"
+  },
+  "ultralytics_version": "8.4.138",
+  "model": "/home/mehedinaeem/Desktop/Code/SmartPresence/models/tracking/yolo11s.pt",
+  "tracker": "/home/mehedinaeem/Desktop/Code/SmartPresence/outputs/tracking/stable_botsort/validation_20261002/botsort_no_reid.yaml",
+  "confidence": 0.1,
+  "inference_size": 960,
+  "stable_identity": {
+    "enabled": true,
+    "max_missing_frames": 120,
+    "max_reassociation_gap_frames": 120,
+    "min_iou_for_reassociation": 0.3,
+    "max_center_distance_ratio": 0.35,
+    "min_size_ratio": 0.65,
+    "max_size_ratio": 1.55,
+    "overlap_iou_threshold": 0.2,
+    "appearance_enabled": true,
+    "appearance_similarity_threshold": 0.9,
+    "appearance_history_size": 20,
+    "min_appearance_samples": 2,
+    "min_appearance_confidence": 0.45,
+    "motion_enabled": true,
+    "motion_prediction_frames": 5,
+    "geometry_only_max_gap_frames": 2,
+    "geometry_only_min_iou": 0.7,
+    "geometry_only_max_center_distance_ratio": 0.15
+  },
+  "tracker_yaml": "appearance_thresh: 0.85\nfuse_score: true\ngmc_method: none\nmatch_thresh: 0.8\nmodel: auto\nnew_track_thresh: 0.55\nproximity_thresh: 0.5\ntrack_buffer: 120\ntrack_high_thresh: 0.45\ntrack_low_thresh: 0.1\ntracker_type: botsort\nwith_reid: false\n"
+}

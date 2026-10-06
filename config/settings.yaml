@@ -49,10 +49,32 @@ TESTING:
   attendance_threshold: *attendance_threshold
   show_preview: false
 TRACKING:
-  model: models/tracking/yolo11n.pt
-  tracker: bytetrack.yaml
+  model: models/tracking/yolo11s.pt
+  tracker: config/bytetrack_smartpresence.yaml
   person_class_id: 0
-  confidence_threshold: 0.40
-  inference_size: 640
+  confidence_threshold: 0.10
+  stable_max_gap_frames: 120
+  inference_size: 960
   show_preview: true
   sample_frame_count: 3
+
+# Conservative visual continuity. These are starting values, not accuracy claims.
+STABLE_IDENTITY:
+  enabled: true
+  max_missing_frames: 120
+  max_reassociation_gap_frames: 120
+  min_iou_for_reassociation: 0.30
+  max_center_distance_ratio: 0.35
+  min_size_ratio: 0.65
+  max_size_ratio: 1.55
+  overlap_iou_threshold: 0.20
+  appearance_enabled: true
+  appearance_similarity_threshold: 0.90
+  appearance_history_size: 20
+  min_appearance_samples: 2
+  min_appearance_confidence: 0.45
+  motion_enabled: true
+  motion_prediction_frames: 5
+  geometry_only_max_gap_frames: 2
+  geometry_only_min_iou: 0.70
+  geometry_only_max_center_distance_ratio: 0.15

@@ -1,0 +1,23 @@
+{
+  "processing_mode": "cached_raw_observation_replay",
+  "total_processed_frames": 2225,
+  "total_raw_track_ids": 8,
+  "total_stable_identities": 8,
+  "raw_id_changes_per_stable_identity": {
+    "S001": 0,
+    "S002": 0,
+    "S003": 0,
+    "S004": 0,
+    "S005": 0,
+    "S006": 0,
+    "S007": 0,
+    "S008": 0
+  },
+  "very_short_raw_tracks_lt_5_frames": 0,
+  "longest_stable_trajectory_visible_frames": 2225,
+  "average_processing_fps": 91.36019766921223,
+  "elapsed_processing_seconds": 24.354150459000266,
+  "source_fps": 30.0,
+  "summed_person_visible_seconds": 375.76666666666665,
+  "disclaimer": "Tracking continuity statistics are descriptive and do not represent IDF1, HOTA, MOTA, or identity accuracy."
+}

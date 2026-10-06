@@ -1,0 +1,31 @@
+
+Video: test_video_02.mp4
+Frame: 1 | Active tracks: [1, 2, 3, 4]
+Frame: 100 | Active tracks: [1, 2, 3, 4]
+Frame: 200 | Active tracks: [1, 2, 4, 7]
+Frame: 300 | Active tracks: [1, 2, 7, 11, 12]
+Frame: 400 | Active tracks: [1, 2, 11, 15]
+Frame: 500 | Active tracks: [1, 2, 13, 15]
+Frame: 600 | Active tracks: [1, 2, 13, 15]
+Frame: 700 | Active tracks: [1, 2, 15, 18]
+Frame: 800 | Active tracks: [1, 2, 15, 18]
+Frame: 900 | Active tracks: [1, 2, 15, 18]
+Frame: 1000 | Active tracks: [1, 2, 18, 23, 26]
+Frame: 1100 | Active tracks: [1, 2, 18, 23, 35]
+Frame: 1200 | Active tracks: [1, 2, 23, 35, 38, 40]
+Frame: 1300 | Active tracks: [1, 2, 23, 35, 40]
+Frame: 1400 | Active tracks: [1, 2, 23, 35, 40]
+Frame: 1500 | Active tracks: [1, 2, 23, 40, 42]
+Frame: 1600 | Active tracks: [1, 2, 23, 40, 47]
+Frame: 1700 | Active tracks: [1, 2, 23, 40, 47]
+Frame: 1800 | Active tracks: [1, 2, 23, 40, 47]
+Frame: 1900 | Active tracks: [1, 2, 23, 40, 47]
+Frame: 2000 | Active tracks: [1, 2, 23, 47, 49]
+Frame: 2100 | Active tracks: [1, 2, 23, 47, 49]
+Frame: 2200 | Active tracks: [1, 2, 23, 47, 49, 58]
+Tracking log: /home/mehedinaeem/Desktop/Code/SmartPresence/outputs/tracking/baseline/validation_20261002/reports/test_video_02_tracking_log.csv
+Stable identity summary: /home/mehedinaeem/Desktop/Code/SmartPresence/outputs/tracking/baseline/validation_20261002/reports/test_video_02_stable_identity_summary.csv
+Output video: /home/mehedinaeem/Desktop/Code/SmartPresence/outputs/tracking/baseline/validation_20261002/videos/test_video_02_tracked.mp4
+Processed frames: 2225 | Tracking observations: 10723
+
+Completed 1/1 video(s).

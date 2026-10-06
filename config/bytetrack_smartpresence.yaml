@@ -1,0 +1,8 @@
+# Process consecutive frames; the buffer is measured in tracker updates.
+tracker_type: bytetrack
+track_high_thresh: 0.45
+track_low_thresh: 0.10
+new_track_thresh: 0.55
+track_buffer: 120
+match_thresh: 0.80
+fuse_score: true

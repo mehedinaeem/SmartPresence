@@ -1,0 +1,13 @@
+
+Video: test_video_02.mp4
+Frame: 1 | Active tracks: [1, 2, 3, 4]
+Frame: 100 | Active tracks: [1, 2, 3, 4]
+Frame: 200 | Active tracks: [1, 2, 3, 4, 6]
+Frame: 300 | Active tracks: [1, 2, 3, 4, 6]
+Frame limit 300 reached; this output covers a consecutive prefix only.
+Tracking log: /home/mehedinaeem/Desktop/Code/SmartPresence/outputs/tracking/stable_botsort/validation_20261004_prefix300_cpu1/reports/test_video_02_tracking_log.csv
+Stable identity summary: /home/mehedinaeem/Desktop/Code/SmartPresence/outputs/tracking/stable_botsort/validation_20261004_prefix300_cpu1/reports/test_video_02_stable_identity_summary.csv
+Output video: /home/mehedinaeem/Desktop/Code/SmartPresence/outputs/tracking/stable_botsort/validation_20261004_prefix300_cpu1/videos/test_video_02_tracked.mp4
+Processed frames: 300 | Tracking observations: 1300
+
+Completed 1/1 video(s).
